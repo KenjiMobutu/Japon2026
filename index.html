@@ -22,7 +22,12 @@
     <!-- External CSS -->
     <link rel="stylesheet" href="styles.css">
 
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
     <link rel="preload" href="app.js" as="script">
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
     <!-- Écran 1: COVER (Hero) -->
@@ -447,6 +452,17 @@
         </div>
 
         <div class="content-scroll">
+
+            <!-- Carte Interactive -->
+            <div class="map-section">
+                <h3 style="margin: 0 0 var(--md) 0; color: var(--torii);">🗺️ Carte Interactive</h3>
+                <div id="interactive-map"></div>
+                <div class="map-legend">
+                    <div class="legend-item"><span class="legend-dot visit"></span> Lieux touristiques</div>
+                    <div class="legend-item"><span class="legend-dot hotel"></span> Logements (à renseigner)</div>
+                    <div class="legend-item"><span class="legend-dot food"></span> Restaurants recommandés</div>
+                </div>
+            </div>
             <!-- Fushimi Inari -->
             <div class="place-card highlight">
                 <div class="place-header">
@@ -573,18 +589,93 @@
         </div>
 
         <div class="content-scroll">
-            <!-- Sélecteur de jour -->
+            <!-- Résumé itinéraire -->
+            <div class="itinerary-summary">
+                <h3>🗾 Votre Voyage en un Coup d'Œil</h3>
+                <div class="summary-route">
+                    <div class="route-step">
+                        <div class="route-icon">🗼</div>
+                        <div class="route-info">
+                            <strong>Tokyo</strong>
+                            <span>Jours 1-4</span>
+                        </div>
+                    </div>
+                    <div class="route-arrow">→</div>
+                    <div class="route-step">
+                        <div class="route-icon">⛩️</div>
+                        <div class="route-info">
+                            <strong>Kyoto</strong>
+                            <span>Jours 5-7</span>
+                        </div>
+                    </div>
+                    <div class="route-arrow">→</div>
+                    <div class="route-step">
+                        <div class="route-icon">🦌</div>
+                        <div class="route-info">
+                            <strong>Nara</strong>
+                            <span>Jour 8</span>
+                        </div>
+                    </div>
+                    <div class="route-arrow">→</div>
+                    <div class="route-step">
+                        <div class="route-icon">🎢</div>
+                        <div class="route-info">
+                            <strong>Osaka</strong>
+                            <span>Jours 9-10</span>
+                        </div>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 16px; color: var(--gris); font-size: 14px;">
+                    📅 12-21 Mars 2026 • 10 jours
+                </p>
+            </div>
+
+            <!-- Sélecteur de jour amélioré -->
+            <div class="day-selector-header">
+                <h3>📆 Sélectionnez un jour</h3>
+                <p>Cliquez pour voir le programme détaillé</p>
+            </div>
             <div class="day-selector">
-                <button class="day-btn active" onclick="selectDay(1, this)">J1</button>
-                <button class="day-btn" onclick="selectDay(2, this)">J2</button>
-                <button class="day-btn" onclick="selectDay(3, this)">J3</button>
-                <button class="day-btn" onclick="selectDay(4, this)">J4</button>
-                <button class="day-btn" onclick="selectDay(5, this)">J5</button>
-                <button class="day-btn" onclick="selectDay(6, this)">J6</button>
-                <button class="day-btn" onclick="selectDay(7, this)">J7</button>
-                <button class="day-btn" onclick="selectDay(8, this)">J8</button>
-                <button class="day-btn" onclick="selectDay(9, this)">J9</button>
-                <button class="day-btn" onclick="selectDay(10, this)">J10</button>
+                <button class="day-btn active" onclick="selectDay(1, this)">
+                    <span class="day-num">1</span>
+                    <span class="day-label">Arrivée</span>
+                </button>
+                <button class="day-btn" onclick="selectDay(2, this)">
+                    <span class="day-num">2</span>
+                    <span class="day-label">Temples</span>
+                </button>
+                <button class="day-btn" onclick="selectDay(3, this)">
+                    <span class="day-num">3</span>
+                    <span class="day-label">Tech & Art</span>
+                </button>
+                <button class="day-btn" onclick="selectDay(4, this)">
+                    <span class="day-num">4</span>
+                    <span class="day-label">Culture</span>
+                </button>
+                <button class="day-btn" onclick="selectDay(5, this)">
+                    <span class="day-num">5</span>
+                    <span class="day-label">Kyoto</span>
+                </button>
+                <button class="day-btn" onclick="selectDay(6, this)">
+                    <span class="day-num">6</span>
+                    <span class="day-label">Nord</span>
+                </button>
+                <button class="day-btn" onclick="selectDay(7, this)">
+                    <span class="day-num">7</span>
+                    <span class="day-label">Thé</span>
+                </button>
+                <button class="day-btn" onclick="selectDay(8, this)">
+                    <span class="day-num">8</span>
+                    <span class="day-label">Nara</span>
+                </button>
+                <button class="day-btn" onclick="selectDay(9, this)">
+                    <span class="day-num">9</span>
+                    <span class="day-label">Universal</span>
+                </button>
+                <button class="day-btn" onclick="selectDay(10, this)">
+                    <span class="day-num">10</span>
+                    <span class="day-label">Départ</span>
+                </button>
             </div>
 
             <!-- Jour 1 -->
@@ -638,6 +729,18 @@
                             <button class="maps-btn-small" onclick="openMaps('Shibuya Crossing Tokyo')">
                                 📍 Maps
                             </button>
+
+                            <div class="location-gallery">
+                                <div class="gallery-item" onclick="openPhotoModal('images/lieux/Shibuya1.jpg', 'Shibuya Crossing de nuit')">
+                                    <img src="images/lieux/Shibuya1.jpg" alt="Shibuya Crossing de nuit" loading="lazy">
+                                </div>
+                                <div class="gallery-item" onclick="openPhotoModal('images/lieux/Shibuya2.jpg', 'La foule à Shibuya')">
+                                    <img src="images/lieux/Shibuya2.jpg" alt="La foule à Shibuya" loading="lazy">
+                                </div>
+                                <div class="gallery-item" onclick="openPhotoModal('images/lieux/Shibuya3.jpg', 'Vue aérienne Shibuya')">
+                                    <img src="images/lieux/Shibuya3.jpg" alt="Vue aérienne Shibuya" loading="lazy">
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -900,6 +1003,17 @@
                             <button class="maps-btn-small" onclick="openMaps('Fushimi Inari Taisha')">
                                 📍 Maps
                             </button>
+                            <div class="location-gallery">
+                                <div class="gallery-item" onclick="openPhotoModal('https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?w=800', '10,000 torii gates')">
+                                    <img src="https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?w=800" alt="10,000 torii gates" loading="lazy">
+                                </div>
+                                <div class="gallery-item" onclick="openPhotoModal('https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800', 'Tunnel de torii')">
+                                    <img src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800" alt="Tunnel de torii" loading="lazy">
+                                </div>
+                                <div class="gallery-item" onclick="openPhotoModal('https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800', 'Escaliers et torii')">
+                                    <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800" alt="Escaliers et torii" loading="lazy">
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -1115,6 +1229,17 @@
                             <button class="maps-btn-small" onclick="openMaps('Nara Park')">
                                 📍 Maps
                             </button>
+                            <div class="location-gallery">
+                                <div class="gallery-item" onclick="openPhotoModal('images/lieux/nara1.jpg', 'Daims sacrés de Nara')">
+                                    <img src="images/lieux/nara1.jpg" alt="Daims sacrés de Nara" loading="lazy">
+                                </div>
+                                <div class="gallery-item" onclick="openPhotoModal('images/lieux/nara2.jpg', 'Nourrissage des daims')">
+                                    <img src="images/lieux/nara2.jpg" alt="Nourrissage des daims" loading="lazy">
+                                </div>
+                                <div class="gallery-item" onclick="openPhotoModal('images/lieux/nara3.jpg', 'Parc en automne')">
+                                    <img src="images/lieux/nara3.jpg" alt="Parc en automne" loading="lazy">
+                                </div>
+                            </div>
                         </div>
                     </div>
 

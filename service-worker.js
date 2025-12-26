@@ -1,11 +1,13 @@
-const CACHE_NAME = 'japon-2026-v2';
+const CACHE_NAME = 'japon-2026-v3.2';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
     '/styles.css',
     '/app.js',
     '/manifest.json',
-    '/images/japon.jpg'
+    '/images/japon.jpg',
+    'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
+    'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'
 ];
 
 // Installation du service worker

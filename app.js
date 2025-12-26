@@ -25,6 +25,11 @@ function goToScreen(screenId) {
         document.body.classList.remove('on-cover');
     }
 
+    // Initialize map only when navigating to Places screen (lazy loading)
+    if (screenId === 'screen-places' && !map) {
+        setTimeout(initializeMap, 300);
+    }
+
     // Haptic feedback
     if (window.navigator.vibrate) {
         window.navigator.vibrate(10);
@@ -32,7 +37,7 @@ function goToScreen(screenId) {
 
     // Scroll to top of new screen - with requestAnimationFrame for better performance
     const contentScroll = targetScreen.querySelector('.content-scroll');
-    if (contentScroll) {
+    if (contentScroll && contentScroll.scrollTop !== 0) {
         requestAnimationFrame(() => {
             contentScroll.scrollTop = 0;
         });
@@ -512,6 +517,217 @@ function updateDayButtons() {
 }
 
 // ====================================
+// PHOTO GALLERY
+// ====================================
+
+let currentPhotoModal = null;
+
+function openPhotoModal(imageSrc, caption) {
+    // Create modal if it doesn't exist
+    if (!currentPhotoModal) {
+        currentPhotoModal = document.createElement('div');
+        currentPhotoModal.className = 'photo-modal';
+        currentPhotoModal.innerHTML = `
+            <div class="photo-modal-content">
+                <button class="photo-close" onclick="closePhotoModal()">×</button>
+                <img src="" alt="">
+                <div class="photo-caption"></div>
+            </div>
+        `;
+        document.body.appendChild(currentPhotoModal);
+
+        // Close on background click
+        currentPhotoModal.addEventListener('click', (e) => {
+            if (e.target === currentPhotoModal) {
+                closePhotoModal();
+            }
+        });
+
+        // Close on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && currentPhotoModal.classList.contains('active')) {
+                closePhotoModal();
+            }
+        });
+    }
+
+    // Update modal content
+    const img = currentPhotoModal.querySelector('img');
+    const captionEl = currentPhotoModal.querySelector('.photo-caption');
+
+    img.src = imageSrc;
+    img.alt = caption;
+    captionEl.textContent = caption;
+
+    // Show modal
+    currentPhotoModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Haptic feedback
+    if (window.navigator.vibrate) {
+        window.navigator.vibrate(10);
+    }
+}
+
+function closePhotoModal() {
+    if (currentPhotoModal) {
+        currentPhotoModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+// ====================================
+// INTERACTIVE MAP
+// ====================================
+
+let map = null;
+
+function initializeMap() {
+    // Check if Leaflet is loaded and map container exists
+    if (typeof L === 'undefined' || !document.getElementById('interactive-map')) {
+        console.log('⏳ Leaflet or map container not ready');
+        return;
+    }
+
+    // Initialize map centered on Japan
+    map = L.map('interactive-map').setView([36.2048, 138.2529], 6);
+
+    // Add MapTiler tile layer with English labels
+    // Get your free API key at: https://cloud.maptiler.com/maps/
+    const MAPTILER_KEY = 'BQr9DRpoV8qRqHr8cAlt'; // Replace with your actual key
+    L.tileLayer(`https://api.maptiler.com/maps/jp-mierune-streets/{z}/{x}/{y}.png?key=${MAPTILER_KEY}`, {
+        attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
+        maxZoom: 19,
+        tileSize: 512,
+        zoomOffset: -1
+    }).addTo(map);
+
+    // Custom icons
+    const visitIcon = L.divIcon({
+        className: 'custom-marker',
+        html: '<div style="background: #d81b2b; width: 24px; height: 24px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3);"></div>',
+        iconSize: [24, 24],
+        iconAnchor: [12, 12]
+    });
+
+    const hotelIcon = L.divIcon({
+        className: 'custom-marker',
+        html: '<div style="background: #c9a961; width: 24px; height: 24px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3);"></div>',
+        iconSize: [24, 24],
+        iconAnchor: [12, 12]
+    });
+
+    const foodIcon = L.divIcon({
+        className: 'custom-marker',
+        html: '<div style="background: #4a7c59; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.25);"></div>',
+        iconSize: [20, 20],
+        iconAnchor: [10, 10]
+    });
+
+    // Tourist locations with coordinates (vérifiées GPS)
+    const locations = [
+        // TOKYO
+        { lat: 35.6762, lng: 139.6503, name: 'Shibuya Crossing', type: 'visit', day: 1 },
+        { lat: 35.7148, lng: 139.7967, name: 'Senso-ji Temple', type: 'visit', day: 2 },
+        { lat: 35.6755, lng: 139.6986, name: 'Meiji Jingu', type: 'visit', day: 2 },
+        { lat: 35.6702, lng: 139.7026, name: 'Harajuku', type: 'visit', day: 2 },
+        { lat: 35.7022, lng: 139.7745, name: 'Akihabara', type: 'visit', day: 3 },
+        { lat: 35.6329, lng: 139.7964, name: 'TeamLab Borderless', type: 'visit', day: 3 },
+        { lat: 35.6586, lng: 139.7454, name: 'Ginza', type: 'visit', day: 3 },
+        { lat: 35.6975, lng: 139.7931, name: 'Ryogoku Kokugikan (Sumo)', type: 'visit', day: 4 },
+        { lat: 35.7148, lng: 139.7744, name: 'Ueno Park', type: 'visit', day: 4 },
+        { lat: 35.7101, lng: 139.8107, name: 'Tokyo Skytree', type: 'visit', day: 4 },
+
+        // KYOTO
+        { lat: 34.9674, lng: 135.7726, name: 'Fushimi Inari Taisha', type: 'visit', day: 5 },
+        { lat: 35.0037, lng: 135.7751, name: 'Gion', type: 'visit', day: 5 },
+        { lat: 35.0394, lng: 135.7292, name: 'Kinkaku-ji (Pavillon d\'Or)', type: 'visit', day: 6 },
+        { lat: 35.0093, lng: 135.6686, name: 'Arashiyama Bambouseraie', type: 'visit', day: 6 },
+        { lat: 35.0050, lng: 135.7605, name: 'Nishiki Market', type: 'visit', day: 6 },
+        { lat: 34.9948, lng: 135.7850, name: 'Kiyomizu-dera', type: 'visit', day: 7 },
+        { lat: 35.0264, lng: 135.7983, name: 'Chemin du Philosophe', type: 'visit', day: 7 },
+
+        // NARA
+        { lat: 34.6851, lng: 135.8048, name: 'Nara Park (Daims)', type: 'visit', day: 8 },
+        { lat: 34.6890, lng: 135.8398, name: 'Todai-ji Temple', type: 'visit', day: 8 },
+        { lat: 34.6803, lng: 135.8485, name: 'Kasuga Taisha', type: 'visit', day: 8 },
+
+        // OSAKA
+        { lat: 34.6654, lng: 135.4325, name: 'Universal Studios Japan', type: 'visit', day: 9 },
+        { lat: 34.6685, lng: 135.5008, name: 'Dotonbori', type: 'visit', day: 9 },
+        { lat: 34.6874, lng: 135.5259, name: 'Château d\'Osaka', type: 'visit', day: 10 },
+        { lat: 34.6662, lng: 135.5049, name: 'Kuromon Market', type: 'visit', day: 10 }
+    ];
+
+    // Accommodation placeholders (à renseigner plus tard)
+    const hotels = [
+        { lat: 35.6812, lng: 139.7671, name: 'Logement Tokyo (à renseigner)', type: 'hotel', days: '1-4' },
+        { lat: 35.0116, lng: 135.7681, name: 'Logement Kyoto (à renseigner)', type: 'hotel', days: '5-8' },
+        { lat: 34.6937, lng: 135.5023, name: 'Logement Osaka (à renseigner)', type: 'hotel', days: '9-10' }
+    ];
+
+    // Add markers for tourist locations
+    locations.forEach(location => {
+        const marker = L.marker([location.lat, location.lng], { icon: visitIcon }).addTo(map);
+        marker.bindPopup(`
+            <h4>${location.name}</h4>
+            <p style="margin: 0; color: #6b7280;">Jour ${location.day}</p>
+        `);
+    });
+
+    // Add markers for hotels (placeholder)
+    hotels.forEach(hotel => {
+        const marker = L.marker([hotel.lat, hotel.lng], { icon: hotelIcon }).addTo(map);
+        marker.bindPopup(`
+            <h4>🏨 ${hotel.name}</h4>
+            <p style="margin: 0; color: #6b7280;">Jours ${hotel.days}</p>
+            <p style="margin: 4px 0 0 0; font-size: 12px; color: #c9a961; font-weight: 600;">📝 À compléter plus tard</p>
+        `);
+    });
+
+    // Draw route lines connecting cities in order
+    const routeCoordinates = [
+        // Tokyo
+        [35.6762, 139.6503], // Shibuya
+        [35.7148, 139.7967], // Sensoji
+        [35.6755, 139.6986], // Meiji (corrigé)
+        [35.7022, 139.7745], // Akihabara
+        [35.7101, 139.8107], // Skytree
+
+        // Shinkansen to Kyoto
+        [35.0116, 135.7681], // Kyoto station area
+
+        // Kyoto
+        [34.9674, 135.7726], // Fushimi Inari (corrigé)
+        [35.0037, 135.7751], // Gion
+        [35.0394, 135.7292], // Kinkaku-ji
+        [35.0093, 135.6686], // Arashiyama
+        [34.9948, 135.7850], // Kiyomizu-dera
+
+        // Nara
+        [34.6851, 135.8048], // Nara Park
+        [34.6890, 135.8398], // Todai-ji
+
+        // Osaka
+        [34.6937, 135.5023], // Osaka area
+        [34.6654, 135.4325], // Universal Studios (corrigé)
+        [34.6685, 135.5008], // Dotonbori (corrigé)
+        [34.6874, 135.5259]  // Château Osaka (corrigé)
+    ];
+
+    // Draw polyline for the route
+    L.polyline(routeCoordinates, {
+        color: '#d81b2b',
+        weight: 3,
+        opacity: 0.6,
+        dashArray: '10, 10',
+        smoothFactor: 1
+    }).addTo(map);
+
+    console.log('🗺️ Carte interactive initialisée avec', locations.length, 'lieux');
+}
+
+// ====================================
 // APP INITIALIZATION - CENTRALIZED
 // ====================================
 
@@ -557,4 +773,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 7. Day completion
     loadCompletedDays();
+
+    // 8. Map will be initialized lazily when user navigates to Places screen
 }, { once: true });
