@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vérification Installation PWA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #E63946;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .check-item {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.95em;
+            transition: all 0.3s;
+        }
+
+        .check-item.success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+
+        .check-item.error {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+
+        .check-item.warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+        }
+
+        .check-item.loading {
+            background: #e7f3ff;
+            border-left: 4px solid #0dcaf0;
+        }
+
+        .icon {
+            font-size: 1.5em;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .message {
+            flex: 1;
+        }
+
+        .message strong {
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .message small {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .section {
+            margin: 30px 0;
+        }
+
+        .section h2 {
+            color: #1D3557;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #E63946;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #F4A261 0%, #e67e22 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.95;
+        }
+
+        button {
+            background: #E63946;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #d62839;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
+        }
+
+        .actions {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px dashed #ddd;
+            text-align: center;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #f0f0f0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #E63946 0%, #d62839 100%);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Vérification Installation</h1>
+        <p class="subtitle">Vérification de tous les fichiers et fonctionnalités PWA</p>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress">0%</div>
+        </div>
+
+        <div class="stats" id="stats">
+            <div class="stat-card">
+                <span class="stat-number" id="total-checks">0</span>
+                <span class="stat-label">Vérifications</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="success-count">0</span>
+                <span class="stat-label">Succès</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="error-count">0</span>
+                <span class="stat-label">Erreurs</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📄 Fichiers Principaux</h2>
+            <div id="files-check"></div>
+        </div>
+
+        <div class="section">
+            <h2>🎨 Icônes PWA</h2>
+            <div id="icons-check"></div>
+        </div>
+
+        <div class="section">
+            <h2>⚙️ Fonctionnalités</h2>
+            <div id="features-check"></div>
+        </div>
+
+        <div class="actions">
+            <button onclick="location.reload()">🔄 Revérifier</button>
+            <button onclick="window.location.href='index.html'">🚀 Ouvrir l'App</button>
+            <button onclick="window.location.href='icons/generate-icons.html'">🎨 Générer Icônes</button>
+        </div>
+    </div>
+
+    <script>
+        let totalChecks = 0;
+        let successCount = 0;
+        let errorCount = 0;
+
+        function updateStats() {
+            document.getElementById('total-checks').textContent = totalChecks;
+            document.getElementById('success-count').textContent = successCount;
+            document.getElementById('error-count').textContent = errorCount;
+
+            const progress = totalChecks > 0 ? Math.round((successCount / totalChecks) * 100) : 0;
+            const progressBar = document.getElementById('progress');
+            progressBar.style.width = progress + '%';
+            progressBar.textContent = progress + '%';
+        }
+
+        function addCheck(container, icon, title, message, status) {
+            totalChecks++;
+            if (status === 'success') successCount++;
+            if (status === 'error') errorCount++;
+
+            const div = document.createElement('div');
+            div.className = `check-item ${status}`;
+            div.innerHTML = `
+                <div class="icon">${icon}</div>
+                <div class="message">
+                    <strong>${title}</strong>
+                    <small>${message}</small>
+                </div>
+            `;
+            document.getElementById(container).appendChild(div);
+            updateStats();
+        }
+
+        async function checkFile(url) {
+            try {
+                const response = await fetch(url, { method: 'HEAD' });
+                return response.ok;
+            } catch {
+                return false;
+            }
+        }
+
+        async function runChecks() {
+            // Fichiers principaux
+            const files = [
+                { url: 'index.html', name: 'Page principale (index.html)' },
+                { url: 'styles.css', name: 'Styles CSS (styles.css)' },
+                { url: 'app.js', name: 'JavaScript (app.js)' },
+                { url: 'service-worker.js', name: 'Service Worker (service-worker.js)' },
+                { url: 'manifest.json', name: 'Manifest PWA (manifest.json)' }
+            ];
+
+            for (const file of files) {
+                const exists = await checkFile(file.url);
+                addCheck(
+                    'files-check',
+                    exists ? '✅' : '❌',
+                    file.name,
+                    exists ? 'Fichier trouvé' : 'Fichier manquant!',
+                    exists ? 'success' : 'error'
+                );
+            }
+
+            // Icônes
+            const iconSizes = [72, 96, 128, 144, 152, 192, 384, 512];
+            for (const size of iconSizes) {
+                const exists = await checkFile(`icons/icon-${size}x${size}.png`);
+                addCheck(
+                    'icons-check',
+                    exists ? '🎨' : '⚠️',
+                    `Icône ${size}x${size}`,
+                    exists ? 'Icône présente' : 'Icône manquante - Générez-la!',
+                    exists ? 'success' : 'warning'
+                );
+            }
+
+            // Fonctionnalités
+            // Service Worker support
+            const swSupport = 'serviceWorker' in navigator;
+            addCheck(
+                'features-check',
+                swSupport ? '✅' : '❌',
+                'Support Service Worker',
+                swSupport ? 'Votre navigateur supporte les PWA' : 'Service Worker non supporté',
+                swSupport ? 'success' : 'error'
+            );
+
+            // LocalStorage
+            const lsSupport = typeof(Storage) !== 'undefined';
+            addCheck(
+                'features-check',
+                lsSupport ? '✅' : '❌',
+                'Support LocalStorage',
+                lsSupport ? 'Checklist pourra être sauvegardée' : 'LocalStorage non supporté',
+                lsSupport ? 'success' : 'error'
+            );
+
+            // HTTPS
+            const isHTTPS = window.location.protocol === 'https:' || window.location.hostname === 'localhost';
+            addCheck(
+                'features-check',
+                isHTTPS ? '✅' : '⚠️',
+                'Connexion sécurisée',
+                isHTTPS ? 'HTTPS actif - Installation PWA possible' : 'HTTPS requis pour installation sur iPhone',
+                isHTTPS ? 'success' : 'warning'
+            );
+
+            // Web Share API
+            const shareSupport = navigator.share !== undefined;
+            addCheck(
+                'features-check',
+                shareSupport ? '✅' : '⚠️',
+                'API de Partage',
+                shareSupport ? 'Partage natif disponible' : 'Partage via copie de lien',
+                shareSupport ? 'success' : 'warning'
+            );
+
+            // Manifest
+            try {
+                const manifestResponse = await fetch('manifest.json');
+                const manifest = await manifestResponse.json();
+                const manifestOk = manifest.name && manifest.icons && manifest.icons.length > 0;
+                addCheck(
+                    'features-check',
+                    manifestOk ? '✅' : '❌',
+                    'Manifest PWA',
+                    manifestOk ? `App: ${manifest.name}` : 'Manifest invalide',
+                    manifestOk ? 'success' : 'error'
+                );
+            } catch {
+                addCheck('features-check', '❌', 'Manifest PWA', 'Impossible de charger le manifest', 'error');
+            }
+        }
+
+        // Exécuter les vérifications au chargement
+        window.addEventListener('load', runChecks);
+    </script>
+</body>
+</html>

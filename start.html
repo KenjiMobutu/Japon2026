@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🇯🇵 Voyage Japon 2026 - Accueil</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #E63946;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 25px;
+            border-radius: 16px;
+            border-left: 5px solid;
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .card.primary { border-left-color: #E63946; }
+        .card.success { border-left-color: #2A9D8F; }
+        .card.warning { border-left-color: #F4A261; }
+        .card.info { border-left-color: #1D3557; }
+
+        .card-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .card h3 {
+            color: #1D3557;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .card p {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: bold;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+
+        .badge.required {
+            background: #fee;
+            color: #E63946;
+        }
+
+        .badge.recommended {
+            background: #d4edda;
+            color: #2A9D8F;
+        }
+
+        .badge.optional {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .section {
+            margin: 40px 0;
+        }
+
+        .section h2 {
+            color: #1D3557;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #E63946;
+            font-size: 1.5em;
+        }
+
+        .alert {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .alert h3 {
+            color: #856404;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .alert ul {
+            margin-left: 20px;
+            color: #666;
+        }
+
+        .alert li {
+            margin: 5px 0;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px dashed #ddd;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🇯🇵 Voyage au Japon 2026</h1>
+        <p class="subtitle">Guide de voyage PWA - 12-21 Mars 2026</p>
+
+        <div class="alert">
+            <h3>⚠️ Première installation</h3>
+            <ul>
+                <li>Générez d'abord les icônes avec le générateur ci-dessous</li>
+                <li>Vérifiez l'installation avec le vérificateur</li>
+                <li>Déployez ensuite sur Netlify ou GitHub Pages</li>
+                <li>Installez l'app sur votre iPhone depuis Safari</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🚀 Actions Rapides</h2>
+            <div class="cards">
+                <a href="index.html" class="card primary">
+                    <span class="card-icon">📱</span>
+                    <h3>Ouvrir l'Application</h3>
+                    <p>Lancez le guide de voyage PWA avec toutes les fonctionnalités</p>
+                    <span class="badge recommended">Principal</span>
+                </a>
+
+                <a href="icons/generate-icons.html" class="card warning">
+                    <span class="card-icon">🎨</span>
+                    <h3>Générer les Icônes</h3>
+                    <p>Créez les 8 icônes nécessaires pour l'installation PWA</p>
+                    <span class="badge required">Requis</span>
+                </a>
+
+                <a href="check-installation.html" class="card success">
+                    <span class="card-icon">✅</span>
+                    <h3>Vérifier Installation</h3>
+                    <p>Testez que tous les fichiers sont présents et fonctionnels</p>
+                    <span class="badge recommended">Recommandé</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📖 Documentation</h2>
+            <div class="cards">
+                <a href="QUICK_START.md" class="card info" target="_blank">
+                    <span class="card-icon">⚡</span>
+                    <h3>Guide Rapide</h3>
+                    <p>Démarrage en 3 étapes simples</p>
+                    <span class="badge recommended">Recommandé</span>
+                </a>
+
+                <a href="README.md" class="card info" target="_blank">
+                    <span class="card-icon">📚</span>
+                    <h3>Documentation Complète</h3>
+                    <p>Guide détaillé avec toutes les fonctionnalités</p>
+                    <span class="badge optional">Référence</span>
+                </a>
+
+                <a href="INSTALLATION_COMPLETE.md" class="card info" target="_blank">
+                    <span class="card-icon">🎉</span>
+                    <h3>Récapitulatif</h3>
+                    <p>Liste des fichiers créés et prochaines étapes</p>
+                    <span class="badge optional">Info</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔧 Fichiers Techniques</h2>
+            <div class="cards">
+                <a href="voyage-japon-mobile.html" class="card info">
+                    <span class="card-icon">📄</span>
+                    <h3>Version Originale</h3>
+                    <p>Fichier HTML original (peut être supprimé)</p>
+                    <span class="badge optional">Ancien</span>
+                </a>
+
+                <a href="manifest.json" class="card info" target="_blank">
+                    <span class="card-icon">⚙️</span>
+                    <h3>Manifest PWA</h3>
+                    <p>Configuration de l'application progressive</p>
+                    <span class="badge optional">Technique</span>
+                </a>
+
+                <a href="service-worker.js" class="card info" target="_blank">
+                    <span class="card-icon">🔄</span>
+                    <h3>Service Worker</h3>
+                    <p>Script pour le mode hors-ligne</p>
+                    <span class="badge optional">Technique</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Structure du projet :</strong> 14 fichiers créés</p>
+            <p>Dernière mise à jour : Décembre 2025</p>
+            <p>🇯🇵 Bon voyage au Japon! ✨</p>
+        </div>
+    </div>
+
+    <script>
+        // Auto-détection et affichage d'un message si les icônes manquent
+        async function checkIcons() {
+            try {
+                const response = await fetch('icons/icon-192x192.png', { method: 'HEAD' });
+                if (!response.ok) {
+                    const alert = document.querySelector('.alert');
+                    alert.style.background = '#fee';
+                    alert.style.borderLeftColor = '#E63946';
+                    alert.querySelector('h3').textContent = '❌ Icônes manquantes!';
+                    alert.querySelector('ul').innerHTML = `
+                        <li><strong>Action requise :</strong> Cliquez sur "Générer les Icônes" ci-dessous</li>
+                        <li>Téléchargez les 8 icônes (72x72 à 512x512)</li>
+                        <li>Sauvegardez-les dans le dossier icons/</li>
+                        <li>Actualisez cette page pour vérifier</li>
+                    `;
+                }
+            } catch (e) {
+                // Ignore errors
+            }
+        }
+
+        window.addEventListener('load', checkIcons);
+    </script>
+</body>
+</html>

@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Guide de voyage moderne pour le Japon - Tokyo, Kyoto, Nara, Osaka - Mars 2026">
+    <meta name="keywords" content="Japon, voyage, Tokyo, Kyoto, Osaka, Nara, guide, itinéraire">
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#D81B2B">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Japon 2026 🌸">
+
+    <!-- Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <title>🇯🇵 Japon 2026 - Version Moderne</title>
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="preload" href="app.js" as="script">
+</head>
+<body>
+    <!-- Écran 1: COVER (Hero) -->
+    <div id="screen-cover" class="screen active">
+        <div class="hero-image">
+            <!-- Placeholder pour image - à remplacer par vraie image -->
+            <div class="hero-placeholder">
+                <div class="hero-icon">
+                    <img src="images/japon.jpg" alt="Japon" class="torii-image">
+                </div>
+            </div>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Japon 2026</h1>
+            <p class="hero-subtitle">Tokyo • Kyoto • Nara • Osaka</p>
+            <p class="hero-dates">12-21 Mars • 10 Jours</p>
+
+            <!-- Compteur de jours -->
+            <div class="countdown-container" id="countdown-container">
+                <p class="countdown-label">🗓️ Départ dans</p>
+                <p class="countdown-number"><span id="countdown-days">0</span> jours</p>
+            </div>
+
+            <button class="cta-button" onclick="goToScreen('screen-menu')">
+                Commencer le voyage
+                <span class="cta-arrow">→</span>
+            </button>
+
+            <!-- Bouton partage -->
+            <button class="share-button" onclick="shareItinerary()">
+                <span>📤 Partager</span>
+            </button>
+        </div>
+
+        <!-- Dark mode toggle -->
+        <button class="dark-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
+            <span class="sun">☀️</span>
+            <span class="moon">🌙</span>
+        </button>
+    </div>
+
+    <!-- Écran 2: MENU (Sommaire) -->
+    <div id="screen-menu" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="goToScreen('screen-cover')">←</button>
+            <h2>Votre Guide</h2>
+            <button class="dark-toggle-small" onclick="toggleDarkMode()">
+                <span class="sun">☀️</span>
+                <span class="moon">🌙</span>
+            </button>
+        </div>
+
+        <div class="menu-cards">
+            <div class="menu-card" onclick="goToScreen('screen-essentials')">
+                <div class="menu-icon">📋</div>
+                <div class="menu-text">
+                    <h3>Essentiels</h3>
+                    <p>Infos pratiques · Argent · Urgences</p>
+                </div>
+                <div class="menu-chevron">›</div>
+            </div>
+
+            <div class="menu-card" onclick="goToScreen('screen-transport')">
+                <div class="menu-icon">🚇</div>
+                <div class="menu-text">
+                    <h3>Se déplacer</h3>
+                    <p>Métro · JR Pass · Suica</p>
+                </div>
+                <div class="menu-chevron">›</div>
+            </div>
+
+            <div class="menu-card" onclick="goToScreen('screen-food')">
+                <div class="menu-icon">🍜</div>
+                <div class="menu-text">
+                    <h3>Manger</h3>
+                    <p>Restaurants · Street food · Konbini</p>
+                </div>
+                <div class="menu-chevron">›</div>
+            </div>
+
+            <div class="menu-card" onclick="goToScreen('screen-places')">
+                <div class="menu-icon">⛩️</div>
+                <div class="menu-text">
+                    <h3>À voir</h3>
+                    <p>Temples · Sites · Activités</p>
+                </div>
+                <div class="menu-chevron">›</div>
+            </div>
+
+            <div class="menu-card" onclick="goToScreen('screen-itinerary')">
+                <div class="menu-icon">🗓️</div>
+                <div class="menu-text">
+                    <h3>Itinéraires</h3>
+                    <p>Planning jour par jour · Timeline</p>
+                </div>
+                <div class="menu-chevron">›</div>
+            </div>
+
+            <div class="menu-card" onclick="goToScreen('screen-tips')">
+                <div class="menu-icon">💡</div>
+                <div class="menu-text">
+                    <h3>Conseils</h3>
+                    <p>Astuces pro · À éviter · Timing</p>
+                </div>
+                <div class="menu-chevron">›</div>
+            </div>
+
+            <div class="menu-card" onclick="goToScreen('screen-vocab')">
+                <div class="menu-icon">🗣️</div>
+                <div class="menu-text">
+                    <h3>Vocabulaire</h3>
+                    <p>Phrases utiles · Prononciation</p>
+                </div>
+                <div class="menu-chevron">›</div>
+            </div>
+
+            <div class="menu-card" onclick="goToScreen('screen-tools')">
+                <div class="menu-icon">🛠️</div>
+                <div class="menu-text">
+                    <h3>Outils</h3>
+                    <p>Convertisseur · Budget · Checklist</p>
+                </div>
+                <div class="menu-chevron">›</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Écran 3: ESSENTIELS -->
+    <div id="screen-essentials" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="goToScreen('screen-menu')">←</button>
+            <h2>Essentiels</h2>
+            <button class="dark-toggle-small" onclick="toggleDarkMode()">
+                <span class="sun">☀️</span>
+                <span class="moon">🌙</span>
+            </button>
+        </div>
+
+        <div class="content-scroll">
+            <!-- Langue -->
+            <div class="info-card-v2">
+                <div class="card-icon">🗣️</div>
+                <div class="card-content">
+                    <h3>Langue</h3>
+                    <p><strong>Japonais</strong> · Anglais rare</p>
+                    <p class="tip">Google Translate essentiel</p>
+                </div>
+            </div>
+
+            <!-- Monnaie -->
+            <div class="info-card-v2">
+                <div class="card-icon">💴</div>
+                <div class="card-content">
+                    <h3>Monnaie</h3>
+                    <p><strong>1€ = 184.69 JPY</strong></p>
+                    <p>Cash recommandé · ATM Seven Bank 24h</p>
+                    <button class="inline-btn" onclick="goToScreen('screen-tools')">
+                        Convertisseur →
+                    </button>
+                </div>
+            </div>
+
+            <!-- eSIM -->
+            <div class="info-card-v2">
+                <div class="card-icon">📱</div>
+                <div class="card-content">
+                    <h3>Internet</h3>
+                    <p><strong>Holafly eSIM</strong> · 10 jours illimité</p>
+                    <p>32€ · Code: MYESIMNOW5 (-5%)</p>
+                </div>
+            </div>
+
+            <!-- Sécurité -->
+            <div class="info-card-v2">
+                <div class="card-icon">🔒</div>
+                <div class="card-content">
+                    <h3>Sécurité</h3>
+                    <p><strong>Pays très sûr</strong></p>
+                    <p>Peu de vols · Objets perdus souvent retrouvés</p>
+                </div>
+            </div>
+
+            <!-- Urgences -->
+            <div class="info-card-v2 urgent">
+                <div class="card-icon">🚨</div>
+                <div class="card-content">
+                    <h3>Numéros d'urgence</h3>
+                    <div class="emergency-grid">
+                        <div class="emergency-item">
+                            <div class="emergency-number">110</div>
+                            <div class="emergency-label">Police</div>
+                        </div>
+                        <div class="emergency-item">
+                            <div class="emergency-number">119</div>
+                            <div class="emergency-label">Ambulance</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Météo -->
+            <div class="info-card-v2">
+                <div class="card-icon">🌡️</div>
+                <div class="card-content">
+                    <h3>Météo Mars</h3>
+                    <p><strong>8-15°C</strong> · 10-12 jours de pluie</p>
+                    <p>3 couches recommandées · Possibles cerisiers 🌸</p>
+                </div>
+            </div>
+
+            <!-- Bagages -->
+            <div class="info-card-v2 warning">
+                <div class="card-icon">⚠️</div>
+                <div class="card-content">
+                    <h3>Bagages</h3>
+                    <p><strong>Cabine: 5 kg MAX</strong> (très strict!)</p>
+                    <p>Soute: 23 kg</p>
+                    <p>Powerbank ≤27,000 mAh en cabine uniquement</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Écran 4: TRANSPORT -->
+    <div id="screen-transport" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="goToScreen('screen-menu')">←</button>
+            <h2>Se déplacer</h2>
+            <button class="dark-toggle-small" onclick="toggleDarkMode()">
+                <span class="sun">☀️</span>
+                <span class="moon">🌙</span>
+            </button>
+        </div>
+
+        <div class="content-scroll">
+            <!-- Suica -->
+            <div class="info-card-v2 highlight">
+                <div class="card-icon">💳</div>
+                <div class="card-content">
+                    <h3>Suica iPhone</h3>
+                    <p><strong>LA solution pratique</strong></p>
+                    <ul class="card-list">
+                        <li>Apple Wallet · Installation facile</li>
+                        <li>Charge: 3,000-5,000 JPY</li>
+                        <li>Métro, train, konbini</li>
+                        <li>Valable: Tokyo, Kyoto, Osaka</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Pass -->
+            <div class="info-card-v2">
+                <div class="card-icon">🎫</div>
+                <div class="card-content">
+                    <h3>Pass transport</h3>
+                    <p><strong>Tokyo:</strong> 8,000 JPY (4 jours) · 43€</p>
+                    <p><strong>Kyoto+Nara:</strong> 6,000 JPY (4j) · 32€</p>
+                    <p><strong>Osaka:</strong> 4,500 JPY (2j+airport) · 24€</p>
+                </div>
+            </div>
+
+            <!-- Shinkansen -->
+            <div class="info-card-v2 highlight">
+                <div class="card-icon">🚄</div>
+                <div class="card-content">
+                    <h3>Shinkansen</h3>
+                    <p><strong>Tokyo → Kyoto</strong> · 2h15</p>
+                    <p>13,320 JPY · 72€</p>
+                    <p class="tip">Réserver siège côté Mt. Fuji (côté E)</p>
+
+                    <p style="margin-top: 12px;"><strong>Comment acheter:</strong></p>
+                    <ul class="card-list">
+                        <li>Guichet gare: montrer destination sur téléphone</li>
+                        <li>Machine automatique: interface EN disponible</li>
+                        <li>Réservation en ligne: JR-East app</li>
+                    </ul>
+
+                    <p style="margin-top: 12px;"><strong>Comment prendre:</strong></p>
+                    <ul class="card-list">
+                        <li>Arriver 15-20 min avant départ</li>
+                        <li>Trouver votre quai (platform number)</li>
+                        <li>Attendre aligné sur numéro de voiture</li>
+                        <li>Train TRÈS ponctuel (à la seconde!)</li>
+                        <li>Bagages: racks au-dessus + arrière sièges</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Google Maps -->
+            <div class="info-card-v2">
+                <div class="card-icon">🗺️</div>
+                <div class="card-content">
+                    <h3>Navigation</h3>
+                    <p><strong>Google Maps hors-ligne</strong></p>
+                    <p>Télécharger avant départ</p>
+                    <p>Intégration transport en temps réel</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Écran 5: NOURRITURE -->
+    <div id="screen-food" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="goToScreen('screen-menu')">←</button>
+            <h2>Manger</h2>
+            <button class="dark-toggle-small" onclick="toggleDarkMode()">
+                <span class="sun">☀️</span>
+                <span class="moon">🌙</span>
+            </button>
+        </div>
+
+        <div class="content-scroll">
+            <!-- Konbini -->
+            <div class="place-card">
+                <div class="place-header">
+                    <div class="place-icon">🏪</div>
+                    <div>
+                        <h3>Konbini</h3>
+                        <div class="place-tags">
+                            <span class="tag budget">Budget</span>
+                            <span class="tag essential">Essentiel</span>
+                        </div>
+                    </div>
+                </div>
+                <p>7-Eleven · Lawson · FamilyMart</p>
+                <p class="price">400-800 JPY</p>
+                <p class="tip">Repas complets · Onigiri · Bentos · 24h</p>
+            </div>
+
+            <!-- Ramen -->
+            <div class="place-card">
+                <div class="place-header">
+                    <div class="place-icon">🍜</div>
+                    <div>
+                        <h3>Ramen</h3>
+                        <div class="place-tags">
+                            <span class="tag must">Incontournable</span>
+                        </div>
+                    </div>
+                </div>
+                <p>Tonkotsu · Miso · Shoyu</p>
+                <p class="price">800-1,200 JPY</p>
+                <p class="tip">Ichiran (cabines individuelles) très populaire</p>
+            </div>
+
+            <!-- Sushi -->
+            <div class="place-card">
+                <div class="place-header">
+                    <div class="place-icon">🍣</div>
+                    <div>
+                        <h3>Sushi</h3>
+                        <div class="place-tags">
+                            <span class="tag">Local</span>
+                        </div>
+                    </div>
+                </div>
+                <p>Kaitenzushi (tapis roulant) recommandé</p>
+                <p class="price">500-2,000 JPY</p>
+            </div>
+
+            <!-- Takoyaki -->
+            <div class="place-card">
+                <div class="place-header">
+                    <div class="place-icon">🐙</div>
+                    <div>
+                        <h3>Takoyaki</h3>
+                        <div class="place-tags">
+                            <span class="tag must">Must Osaka</span>
+                        </div>
+                    </div>
+                </div>
+                <p>Boulettes de poulpe · Spécialité Osaka</p>
+                <p class="price">400-600 JPY</p>
+                <a href="https://maps.google.com/?q=Dotonbori+Osaka" class="maps-btn">
+                    📍 Dotonbori
+                </a>
+            </div>
+
+            <!-- Street food -->
+            <div class="info-card-v2">
+                <div class="card-icon">🍢</div>
+                <div class="card-content">
+                    <h3>Street Food Must-Try</h3>
+                    <ul class="card-list">
+                        <li>Crêpes Harajuku · 500-800 JPY</li>
+                        <li>Gyoza · 400-600 JPY</li>
+                        <li>Okonomiyaki · 800-1,500 JPY</li>
+                        <li>Kushikatsu (brochettes) · Osaka</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Cérémonies thé -->
+            <div class="place-card highlight">
+                <div class="place-header">
+                    <div class="place-icon">🍵</div>
+                    <div>
+                        <h3>Cérémonie du Thé</h3>
+                        <div class="place-tags">
+                            <span class="tag must">Expérience unique</span>
+                        </div>
+                    </div>
+                </div>
+                <p>Tradition zen · Camellia (Kyoto)</p>
+                <p class="price">~5,000 JPY</p>
+                <p class="warning-text">⚠️ Réservation obligatoire</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Écran 6: LIEUX -->
+    <div id="screen-places" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="goToScreen('screen-menu')">←</button>
+            <h2>À voir</h2>
+            <button class="dark-toggle-small" onclick="toggleDarkMode()">
+                <span class="sun">☀️</span>
+                <span class="moon">🌙</span>
+            </button>
+        </div>
+
+        <div class="content-scroll">
+            <!-- Fushimi Inari -->
+            <div class="place-card highlight">
+                <div class="place-header">
+                    <div class="place-icon">⛩️</div>
+                    <div>
+                        <h3>Fushimi Inari</h3>
+                        <div class="place-tags">
+                            <span class="tag must">Incontournable</span>
+                            <span class="tag free">Gratuit</span>
+                        </div>
+                    </div>
+                </div>
+                <p><strong>10,000 torii rouges magiques</strong></p>
+                <p>Kyoto · Lever/coucher soleil optimal</p>
+                <p class="tip">Goshuin disponible · 500 JPY</p>
+                <a href="https://maps.google.com/?q=Fushimi+Inari+Taisha" class="maps-btn">
+                    📍 Ouvrir dans Maps
+                </a>
+            </div>
+
+            <!-- Nara Park -->
+            <div class="place-card highlight">
+                <div class="place-header">
+                    <div class="place-icon">🦌</div>
+                    <div>
+                        <h3>Nara Park</h3>
+                        <div class="place-tags">
+                            <span class="tag must">Incontournable</span>
+                            <span class="tag free">Gratuit</span>
+                        </div>
+                    </div>
+                </div>
+                <p><strong>1,000+ daims sacrés en liberté!</strong></p>
+                <p>Biscuits pour daims · 200 JPY</p>
+                <a href="https://maps.google.com/?q=Nara+Park" class="maps-btn">
+                    📍 Ouvrir dans Maps
+                </a>
+            </div>
+
+            <!-- Autres lieux -->
+            <div class="place-card">
+                <div class="place-header">
+                    <div class="place-icon">🏯</div>
+                    <div>
+                        <h3>Kinkaku-ji (Pavillon d'Or)</h3>
+                        <div class="place-tags">
+                            <span class="tag must">Must-see</span>
+                        </div>
+                    </div>
+                </div>
+                <p>Temple recouvert de feuilles d'or</p>
+                <p class="price">500 JPY + Goshuin 500 JPY</p>
+                <p class="tip">Arriver tôt (8h) pour éviter la foule</p>
+                <a href="https://maps.google.com/?q=Kinkaku-ji+Kyoto" class="maps-btn">
+                    📍 Ouvrir dans Maps
+                </a>
+            </div>
+
+            <div class="place-card">
+                <div class="place-header">
+                    <div class="place-icon">🎋</div>
+                    <div>
+                        <h3>Bambouseraie Arashiyama</h3>
+                        <div class="place-tags">
+                            <span class="tag must">Magique</span>
+                            <span class="tag free">Gratuit</span>
+                        </div>
+                    </div>
+                </div>
+                <p>Forêt de bambous géants</p>
+                <p class="tip">Tôt le matin pour ambiance zen</p>
+                <a href="https://maps.google.com/?q=Arashiyama+Bamboo+Grove" class="maps-btn">
+                    📍 Ouvrir dans Maps
+                </a>
+            </div>
+
+            <div class="place-card">
+                <div class="place-header">
+                    <div class="place-icon">🌆</div>
+                    <div>
+                        <h3>Shibuya Crossing</h3>
+                        <div class="place-tags">
+                            <span class="tag must">Iconique</span>
+                            <span class="tag free">Gratuit</span>
+                        </div>
+                    </div>
+                </div>
+                <p>Carrefour le plus fréquenté au monde</p>
+                <p class="tip">Meilleure vue: Starbucks 2e étage</p>
+                <a href="https://maps.google.com/?q=Shibuya+Crossing+Tokyo" class="maps-btn">
+                    📍 Ouvrir dans Maps
+                </a>
+            </div>
+
+            <div class="place-card">
+                <div class="place-header">
+                    <div class="place-icon">✨</div>
+                    <div>
+                        <h3>TeamLab Borderless</h3>
+                        <div class="place-tags">
+                            <span class="tag">Unique</span>
+                        </div>
+                    </div>
+                </div>
+                <p>Art numérique immersif</p>
+                <p class="price">3,200 JPY</p>
+                <p class="warning-text">⚠️ Réservation OBLIGATOIRE</p>
+                <a href="https://maps.google.com/?q=TeamLab+Borderless+Tokyo" class="maps-btn">
+                    📍 Ouvrir dans Maps
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Écran 7: ITINÉRAIRE (Timeline) -->
+    <div id="screen-itinerary" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="goToScreen('screen-menu')">←</button>
+            <h2>Itinéraire</h2>
+            <button class="dark-toggle-small" onclick="toggleDarkMode()">
+                <span class="sun">☀️</span>
+                <span class="moon">🌙</span>
+            </button>
+        </div>
+
+        <div class="content-scroll">
+            <!-- Sélecteur de jour -->
+            <div class="day-selector">
+                <button class="day-btn active" onclick="selectDay(1, this)">J1</button>
+                <button class="day-btn" onclick="selectDay(2, this)">J2</button>
+                <button class="day-btn" onclick="selectDay(3, this)">J3</button>
+                <button class="day-btn" onclick="selectDay(4, this)">J4</button>
+                <button class="day-btn" onclick="selectDay(5, this)">J5</button>
+                <button class="day-btn" onclick="selectDay(6, this)">J6</button>
+                <button class="day-btn" onclick="selectDay(7, this)">J7</button>
+                <button class="day-btn" onclick="selectDay(8, this)">J8</button>
+                <button class="day-btn" onclick="selectDay(9, this)">J9</button>
+                <button class="day-btn" onclick="selectDay(10, this)">J10</button>
+            </div>
+
+            <!-- Jour 1 -->
+            <div id="day-1" class="day-content active">
+                <div class="day-header-v2">
+                    <h3>Jour 1 - Arrivée</h3>
+                    <span class="day-date">Mercredi 12 Mars</span>
+                    <span class="day-badge tokyo">Tokyo</span>
+                    <button class="day-complete-btn" onclick="toggleDayComplete(1)" title="Marquer comme accompli">
+                        <span class="check-icon">✓</span>
+                    </button>
+                </div>
+
+                <!-- Zone de notes -->
+                <div class="day-notes">
+                    <textarea
+                        id="note-day-1"
+                        placeholder="✍️ Mes notes pour ce jour..."
+                        onblur="saveNote(1)"
+                        rows="2"></textarea>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot transport"></div>
+                        <div class="timeline-time">12:00</div>
+                        <div class="timeline-card">
+                            <h4>✈️ Atterrissage Narita</h4>
+                            <p>Immigration + bagages (1h30)</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot transport"></div>
+                        <div class="timeline-time">13:30</div>
+                        <div class="timeline-card">
+                            <h4>🎫 Suica + Narita Express</h4>
+                            <p>Installation Suica iPhone</p>
+                            <p>Train → Tokyo</p>
+                            <span class="price-inline">3,000 JPY</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">17:00</div>
+                        <div class="timeline-card">
+                            <h4>🌆 Shibuya Crossing</h4>
+                            <p>Carrefour le plus fréquenté au monde!</p>
+                            <span class="tag free">Gratuit</span>
+                            <button class="maps-btn-small" onclick="openMaps('Shibuya Crossing Tokyo')">
+                                📍 Maps
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot food"></div>
+                        <div class="timeline-time">19:00</div>
+                        <div class="timeline-card">
+                            <h4>🍜 Dîner Street Food</h4>
+                            <p>Ramen ou gyoza</p>
+                            <span class="price-inline">800-1,500 JPY</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jour 2 -->
+            <div id="day-2" class="day-content">
+                <div class="day-header-v2">
+                    <h3>Jour 2 - Traditionnel</h3>
+                    <span class="day-date">Jeudi 13 Mars</span>
+                    <span class="day-badge tokyo">Tokyo</span>
+                    <button class="day-complete-btn" onclick="toggleDayComplete(2)" title="Marquer comme accompli">
+                        <span class="check-icon">✓</span>
+                    </button>
+                </div>
+
+                <!-- Zone de notes -->
+                <div class="day-notes">
+                    <textarea
+                        id="note-day-2"
+                        placeholder="✍️ Mes notes pour ce jour..."
+                        onblur="saveNote(2)"
+                        rows="2"></textarea>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">09:00</div>
+                        <div class="timeline-card">
+                            <h4>⛩️ Senso-ji Temple</h4>
+                            <p><strong>ACHAT Goshuinchō</strong></p>
+                            <span class="price-inline">1,500 JPY (carnet) + 500 JPY (1er tampon)</span>
+                            <span class="tag free">Temple gratuit</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">11:00</div>
+                        <div class="timeline-card">
+                            <h4>🍵 Cérémonie du Thé</h4>
+                            <p>Expérience zen traditionnelle</p>
+                            <span class="price-inline">~5,000 JPY</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">15:00</div>
+                        <div class="timeline-card">
+                            <h4>🌳 Meiji Jingu</h4>
+                            <p>Forêt sacrée + Goshuin</p>
+                            <span class="tag free">Gratuit</span>
+                            <span class="price-inline">Goshuin: 500 JPY</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">17:00</div>
+                        <div class="timeline-card">
+                            <h4>🎀 Harajuku Takeshita</h4>
+                            <p>Culture kawaii + Crêpes</p>
+                            <span class="price-inline">500-800 JPY</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">20:30</div>
+                        <div class="timeline-card">
+                            <h4>🌃 Observatoire Mairie</h4>
+                            <p>Vue 360° spectaculaire!</p>
+                            <span class="tag free">Gratuit</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jour 3 -->
+            <div id="day-3" class="day-content">
+                <div class="day-header-v2">
+                    <h3>Jour 3 - Tech & Art</h3>
+                    <span class="day-date">Vendredi 14 Mars</span>
+                    <span class="day-badge tokyo">Tokyo</span>
+                    <button class="day-complete-btn" onclick="toggleDayComplete(3)" title="Marquer comme accompli">
+                        <span class="check-icon">✓</span>
+                    </button>
+                </div>
+
+                <!-- Zone de notes -->
+                <div class="day-notes">
+                    <textarea
+                        id="note-day-3"
+                        placeholder="✍️ Mes notes pour ce jour..."
+                        onblur="saveNote(3)"
+                        rows="2"></textarea>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">09:00</div>
+                        <div class="timeline-card">
+                            <h4>🎮 Akihabara</h4>
+                            <p>Paradis électronique!</p>
+                            <p>Yodobashi (9 étages), Super Potato</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">15:00</div>
+                        <div class="timeline-card">
+                            <h4>✨ TeamLab</h4>
+                            <p>Art numérique immersif</p>
+                            <span class="price-inline">3,200 JPY</span>
+                            <p class="warning-text">⚠️ Réservation OBLIGATOIRE</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">18:00</div>
+                        <div class="timeline-card">
+                            <h4>💄 Ginza Shopping</h4>
+                            <p>Don Quijote, Matsumoto Kiyoshi</p>
+                            <p>Cosmétiques 30-70% moins cher!</p>
+                            <p class="warning-text">💡 Détaxe 8-10% avec passeport!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jour 4 -->
+            <div id="day-4" class="day-content">
+                <div class="day-header-v2">
+                    <h3>Jour 4 - Exploration</h3>
+                    <span class="day-date">Samedi 15 Mars</span>
+                    <span class="day-badge tokyo">Tokyo</span>
+                    <button class="day-complete-btn" onclick="toggleDayComplete(4)" title="Marquer comme accompli">
+                        <span class="check-icon">✓</span>
+                    </button>
+                </div>
+
+                <!-- Zone de notes -->
+                <div class="day-notes">
+                    <textarea
+                        id="note-day-4"
+                        placeholder="✍️ Mes notes pour ce jour..."
+                        onblur="saveNote(4)"
+                        rows="2"></textarea>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">08:00</div>
+                        <div class="timeline-card">
+                            <h4>🥋 Écurie Sumo</h4>
+                            <p>Entraînement matinal</p>
+                            <span class="tag free">Gratuit (optionnel)</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">11:00</div>
+                        <div class="timeline-card">
+                            <h4>🌸 Ueno Park</h4>
+                            <p>Possibles cerisiers + Goshuin</p>
+                            <span class="tag free">Gratuit</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">14:00</div>
+                        <div class="timeline-card">
+                            <h4>🏯 Yanaka</h4>
+                            <p>Quartier traditionnel préservé</p>
+                            <span class="tag free">Gratuit</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">17:00</div>
+                        <div class="timeline-card">
+                            <h4>🗼 Tokyo Skytree</h4>
+                            <p>Vue panoramique</p>
+                            <span class="price-inline">~3,000 JPY</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jour 5 -->
+            <div id="day-5" class="day-content">
+                <div class="day-header-v2">
+                    <h3>Jour 5 - Shinkansen</h3>
+                    <span class="day-date">Dimanche 16 Mars</span>
+                    <span class="day-badge tokyo">Tokyo</span>
+                    <span class="day-badge kyoto">Kyoto</span>
+                    <button class="day-complete-btn" onclick="toggleDayComplete(5)" title="Marquer comme accompli">
+                        <span class="check-icon">✓</span>
+                    </button>
+                </div>
+
+                <!-- Zone de notes -->
+                <div class="day-notes">
+                    <textarea
+                        id="note-day-5"
+                        placeholder="✍️ Mes notes pour ce jour..."
+                        onblur="saveNote(5)"
+                        rows="2"></textarea>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">09:00</div>
+                        <div class="timeline-card">
+                            <h4>🛍️ Shopping Final Tokyo</h4>
+                            <p>Derniers achats</p>
+                            <p class="warning-text">💡 Détaxe 8-10% avec passeport!</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot transport"></div>
+                        <div class="timeline-time">13:00</div>
+                        <div class="timeline-card">
+                            <h4>🚄 Shinkansen</h4>
+                            <p>Tokyo → Kyoto, 2h15</p>
+                            <span class="price-inline">13,320 JPY (~72€)</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">16:30</div>
+                        <div class="timeline-card">
+                            <h4>⛩️ Fushimi Inari</h4>
+                            <p><strong>INCONTOURNABLE!</strong></p>
+                            <p>10,000 torii rouges magiques</p>
+                            <span class="tag free">Gratuit</span>
+                            <span class="price-inline">Goshuin: 500 JPY</span>
+                            <button class="maps-btn-small" onclick="openMaps('Fushimi Inari Taisha')">
+                                📍 Maps
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">21:00</div>
+                        <div class="timeline-card">
+                            <h4>👘 Gion</h4>
+                            <p>Observation geishas illuminées</p>
+                            <span class="tag free">Gratuit</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jour 6 -->
+            <div id="day-6" class="day-content">
+                <div class="day-header-v2">
+                    <h3>Jour 6 - Temples Nord</h3>
+                    <span class="day-date">Lundi 17 Mars</span>
+                    <span class="day-badge kyoto">Kyoto</span>
+                    <button class="day-complete-btn" onclick="toggleDayComplete(6)" title="Marquer comme accompli">
+                        <span class="check-icon">✓</span>
+                    </button>
+                </div>
+
+                <!-- Zone de notes -->
+                <div class="day-notes">
+                    <textarea
+                        id="note-day-6"
+                        placeholder="✍️ Mes notes pour ce jour..."
+                        onblur="saveNote(6)"
+                        rows="2"></textarea>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">08:00</div>
+                        <div class="timeline-card">
+                            <h4>⛩️ Kinkaku-ji</h4>
+                            <p>Pavillon d'Or - Arriver tôt!</p>
+                            <span class="price-inline">500 JPY + Goshuin 500 JPY</span>
+                            <button class="maps-btn-small" onclick="openMaps('Kinkaku-ji Kyoto')">
+                                📍 Maps
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">10:30</div>
+                        <div class="timeline-card">
+                            <h4>🏛️ Ryoan-ji</h4>
+                            <p>Jardin zen méditatif</p>
+                            <span class="price-inline">500 JPY + Goshuin 500 JPY</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">13:30</div>
+                        <div class="timeline-card">
+                            <h4>🎋 Bambouseraie Arashiyama</h4>
+                            <p><strong>MAGIQUE!</strong></p>
+                            <p>Forêt bambous géants</p>
+                            <span class="tag free">Gratuit</span>
+                            <button class="maps-btn-small" onclick="openMaps('Arashiyama Bamboo Grove')">
+                                📍 Maps
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot food"></div>
+                        <div class="timeline-time">17:00</div>
+                        <div class="timeline-card">
+                            <h4>🦞 Nishiki Market</h4>
+                            <p>Street food + dégustations gratuites!</p>
+                            <span class="tag free">Gratuit</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot rest"></div>
+                        <div class="timeline-time">20:30</div>
+                        <div class="timeline-card">
+                            <h4>🌊 Kamo River</h4>
+                            <p>Promenade romantique</p>
+                            <span class="tag free">Gratuit</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jour 7 -->
+            <div id="day-7" class="day-content">
+                <div class="day-header-v2">
+                    <h3>Jour 7 - Culture & Thé</h3>
+                    <span class="day-date">Mardi 18 Mars</span>
+                    <span class="day-badge kyoto">Kyoto</span>
+                    <button class="day-complete-btn" onclick="toggleDayComplete(7)" title="Marquer comme accompli">
+                        <span class="check-icon">✓</span>
+                    </button>
+                </div>
+
+                <!-- Zone de notes -->
+                <div class="day-notes">
+                    <textarea
+                        id="note-day-7"
+                        placeholder="✍️ Mes notes pour ce jour..."
+                        onblur="saveNote(7)"
+                        rows="2"></textarea>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">08:30</div>
+                        <div class="timeline-card">
+                            <h4>⛩️ Kiyomizu-dera</h4>
+                            <p>Temple sur pilotis</p>
+                            <span class="price-inline">400 JPY + Goshuin 500 JPY</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">10:30</div>
+                        <div class="timeline-card">
+                            <h4>🏘️ Sannenzaka/Ninenzaka</h4>
+                            <p>Rues préservées traditionnelles</p>
+                            <span class="tag free">Gratuit</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot food"></div>
+                        <div class="timeline-time">11:30</div>
+                        <div class="timeline-card">
+                            <h4>🍵 Cérémonie Thé Camellia</h4>
+                            <p>Maison thé Ninenzaka</p>
+                            <span class="price-inline">~5,000 JPY</span>
+                            <p class="warning-text">⚠️ Réservation recommandée</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">15:00</div>
+                        <div class="timeline-card">
+                            <h4>🚶 Chemin du Philosophe</h4>
+                            <p>2 km bordé cerisiers</p>
+                            <p>Ginkaku-ji fin</p>
+                            <span class="tag free">Gratuit</span>
+                            <span class="price-inline">Temple: 500 JPY</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">17:30</div>
+                        <div class="timeline-card">
+                            <h4>👘 Shopping Kimono</h4>
+                            <p>Chicago Vintage Teramachi</p>
+                            <span class="price-inline">2,000-10,000 JPY</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jour 8 -->
+            <div id="day-8" class="day-content">
+                <div class="day-header-v2">
+                    <h3>Jour 8 - Excursion Nara</h3>
+                    <span class="day-date">Mercredi 19 Mars</span>
+                    <span class="day-badge kyoto">Kyoto</span>
+                    <span class="day-badge nara">Nara</span>
+                    <button class="day-complete-btn" onclick="toggleDayComplete(8)" title="Marquer comme accompli">
+                        <span class="check-icon">✓</span>
+                    </button>
+                </div>
+
+                <!-- Zone de notes -->
+                <div class="day-notes">
+                    <textarea
+                        id="note-day-8"
+                        placeholder="✍️ Mes notes pour ce jour..."
+                        onblur="saveNote(8)"
+                        rows="2"></textarea>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot transport"></div>
+                        <div class="timeline-time">09:00</div>
+                        <div class="timeline-card">
+                            <h4>🚃 Train → Nara</h4>
+                            <p>45 min</p>
+                            <span class="price-inline">720 JPY</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">10:00</div>
+                        <div class="timeline-card">
+                            <h4>🦌 Nara Park</h4>
+                            <p><strong>MAGIQUE!</strong></p>
+                            <p>1,000+ daims sacrés en liberté!</p>
+                            <span class="tag free">Gratuit</span>
+                            <span class="price-inline">Biscuits daims: 200 JPY</span>
+                            <button class="maps-btn-small" onclick="openMaps('Nara Park')">
+                                📍 Maps
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">11:00</div>
+                        <div class="timeline-card">
+                            <h4>🏛️ Todai-ji Temple</h4>
+                            <p>Grand Bouddha 15m!</p>
+                            <span class="price-inline">600 JPY + Goshuin 500 JPY</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">14:30</div>
+                        <div class="timeline-card">
+                            <h4>⛩️ Kasuga Taisha</h4>
+                            <p>3,000 lanternes!</p>
+                            <p>Extérieur gratuit</p>
+                            <span class="price-inline">Intérieur: 500 JPY + Goshuin 500 JPY</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot transport"></div>
+                        <div class="timeline-time">18:00</div>
+                        <div class="timeline-card">
+                            <h4>🏢 Gare Kyoto Rooftop</h4>
+                            <p>Vue panoramique spectaculaire</p>
+                            <span class="tag free">Gratuit</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jour 9 -->
+            <div id="day-9" class="day-content">
+                <div class="day-header-v2">
+                    <h3>Jour 9 - Universal</h3>
+                    <span class="day-date">Jeudi 20 Mars</span>
+                    <span class="day-badge osaka">Osaka</span>
+                    <button class="day-complete-btn" onclick="toggleDayComplete(9)" title="Marquer comme accompli">
+                        <span class="check-icon">✓</span>
+                    </button>
+                </div>
+
+                <!-- Zone de notes -->
+                <div class="day-notes">
+                    <textarea
+                        id="note-day-9"
+                        placeholder="✍️ Mes notes pour ce jour..."
+                        onblur="saveNote(9)"
+                        rows="2"></textarea>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot transport"></div>
+                        <div class="timeline-time">08:00</div>
+                        <div class="timeline-card">
+                            <h4>🚃 Kyoto → Osaka</h4>
+                            <p>30 min</p>
+                            <span class="price-inline">560 JPY</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">11:00</div>
+                        <div class="timeline-card">
+                            <h4>🎢 UNIVERSAL STUDIOS JAPAN</h4>
+                            <span class="price-inline">~9,500 JPY</span>
+                            <p><strong>Priorités:</strong></p>
+                            <p>🎮 Super Nintendo World (tôt!)</p>
+                            <p>⚡ Harry Potter World</p>
+                            <p>🦖 Jurassic Park · 🕷️ Spider-Man</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot food"></div>
+                        <div class="timeline-time">21:30</div>
+                        <div class="timeline-card">
+                            <h4>🌃 Dotonbori Express</h4>
+                            <p>Photos Glico Man + Takoyaki</p>
+                            <span class="price-inline">500 JPY</span>
+                            <button class="maps-btn-small" onclick="openMaps('Dotonbori Osaka')">
+                                📍 Maps
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jour 10 -->
+            <div id="day-10" class="day-content">
+                <div class="day-header-v2">
+                    <h3>Jour 10 - Départ</h3>
+                    <span class="day-date">Vendredi 21 Mars</span>
+                    <span class="day-badge osaka">Osaka</span>
+                    <button class="day-complete-btn" onclick="toggleDayComplete(10)" title="Marquer comme accompli">
+                        <span class="check-icon">✓</span>
+                    </button>
+                </div>
+
+                <!-- Zone de notes -->
+                <div class="day-notes">
+                    <textarea
+                        id="note-day-10"
+                        placeholder="✍️ Mes notes pour ce jour..."
+                        onblur="saveNote(10)"
+                        rows="2"></textarea>
+                </div>
+
+                <div class="alert-v2 info">
+                    <p><strong>Journée relaxe - Vol 22h10</strong></p>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">09:30</div>
+                        <div class="timeline-card">
+                            <h4>🏯 Château Osaka</h4>
+                            <p>Parc gratuit</p>
+                            <span class="price-inline">Intérieur: 600 JPY (optionnel)</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">11:30</div>
+                        <div class="timeline-card">
+                            <h4>⛩️ Sumiyoshi Taisha</h4>
+                            <p>Pont rouge + Goshuin</p>
+                            <span class="tag free">Gratuit</span>
+                            <span class="price-inline">Goshuin: 500 JPY</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot food"></div>
+                        <div class="timeline-time">13:00</div>
+                        <div class="timeline-card">
+                            <h4>🦞 Kuromon Market</h4>
+                            <p><strong>PARADIS STREET FOOD!</strong></p>
+                            <p>Fruits de mer, wagyu</p>
+                            <span class="price-inline">1,500-2,500 JPY</span>
+                            <button class="maps-btn-small" onclick="openMaps('Kuromon Market Osaka')">
+                                📍 Maps
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot visit"></div>
+                        <div class="timeline-time">15:00</div>
+                        <div class="timeline-card">
+                            <h4>🌆 Dotonbori Final</h4>
+                            <p>Photos + Shopping Shinsaibashi</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot transport"></div>
+                        <div class="timeline-time">17:30</div>
+                        <div class="timeline-card">
+                            <h4>⚠️ DÉPART</h4>
+                            <p><strong>Départ hôtel</strong></p>
+                            <p>22h10 - Décollage KIX → BRU</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Écran 8: CONSEILS -->
+    <div id="screen-tips" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="goToScreen('screen-menu')">←</button>
+            <h2>Conseils Pro</h2>
+            <button class="dark-toggle-small" onclick="toggleDarkMode()">
+                <span class="sun">☀️</span>
+                <span class="moon">🌙</span>
+            </button>
+        </div>
+
+        <div class="content-scroll">
+            <!-- Section Goshuin -->
+            <div class="info-card-v2 highlight">
+                <div class="card-icon">📿</div>
+                <div class="card-content">
+                    <h3>Goshuin - Tampons Sacrés</h3>
+                    <p><strong>Comment faire?</strong></p>
+                    <ul class="card-list">
+                        <li>Acheter Goshuinchō au 1er temple (1,500 JPY)</li>
+                        <li>Chercher "御朱印" dans les temples</li>
+                        <li>Remettre carnet ouvert</li>
+                        <li>Dire "Goshuin itadakemasuka?"</li>
+                        <li>Payer 300-500 JPY par tampon</li>
+                        <li>⚠️ JAMAIS écrire dedans!</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Conseils format court -->
+            <div class="tip-card warning">
+                <div class="tip-icon">⚠️</div>
+                <div class="tip-content">
+                    <h4>Fushimi Inari</h4>
+                    <p>Éviter 12h-14h</p>
+                    <p>Files doublées</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-icon">💡</div>
+                <div class="tip-content">
+                    <h4>Chaussures</h4>
+                    <p>Faciles à retirer</p>
+                    <p>Temples = pieds nus</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-icon">💰</div>
+                <div class="tip-content">
+                    <h4>Pourboire</h4>
+                    <p>JAMAIS de tips</p>
+                    <p>Peut être offensant</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-icon">⏰</div>
+                <div class="tip-content">
+                    <h4>Lever tôt</h4>
+                    <p>Temples: 8h-9h</p>
+                    <p>Foules 10h+</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-icon">🏪</div>
+                <div class="tip-content">
+                    <h4>Konbini</h4>
+                    <p>Votre meilleur ami</p>
+                    <p>24h · Repas · ATM</p>
+                </div>
+            </div>
+
+            <div class="tip-card warning">
+                <div class="tip-icon">⚠️</div>
+                <div class="tip-content">
+                    <h4>TeamLab</h4>
+                    <p>Réserver 2 semaines avant</p>
+                    <p>Complet rapidement</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-icon">💡</div>
+                <div class="tip-content">
+                    <h4>Google Maps</h4>
+                    <p>Mode hors-ligne</p>
+                    <p>Télécharger avant</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-icon">📱</div>
+                <div class="tip-content">
+                    <h4>Google Translate</h4>
+                    <p>Mode caméra essentiel</p>
+                    <p>Menus + panneaux</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-icon">💰</div>
+                <div class="tip-content">
+                    <h4>Détaxe</h4>
+                    <p>8-10% de remise</p>
+                    <p>Avec passeport</p>
+                </div>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-icon">🍜</div>
+                <div class="tip-content">
+                    <h4>Manger bruyant OK</h4>
+                    <p>Ramen: aspirer fort</p>
+                    <p>Signe de respect</p>
+                </div>
+            </div>
+
+            <!-- Sumo opportunity -->
+            <div class="info-card-v2 highlight">
+                <div class="card-icon">🥋</div>
+                <div class="card-content">
+                    <h3>Tournoi Sumo Osaka</h3>
+                    <p><strong>OPPORTUNITÉ 9-23 MARS!</strong></p>
+                    <p>Vous serez à Osaka!</p>
+                    <ul class="card-list">
+                        <li>Debout: ~2,000 JPY (11€)</li>
+                        <li>Assis: 4,000-40,000 JPY</li>
+                        <li>Réservation: sumo.or.jp</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Écran 9: VOCABULAIRE -->
+    <div id="screen-vocab" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="goToScreen('screen-menu')">←</button>
+            <h2>Vocabulaire</h2>
+            <button class="dark-toggle-small" onclick="toggleDarkMode()">
+                <span class="sun">☀️</span>
+                <span class="moon">🌙</span>
+            </button>
+        </div>
+
+        <div class="content-scroll">
+            <div class="vocab-section">
+                <h3>Politesse</h3>
+                <div class="vocab-grid-v2">
+                    <div class="vocab-item-v2">
+                        <div class="vocab-jp">こんにちは</div>
+                        <div class="vocab-romaji">Konnichiwa</div>
+                        <div class="vocab-fr">Bonjour</div>
+                    </div>
+                    <div class="vocab-item-v2">
+                        <div class="vocab-jp">ありがとう</div>
+                        <div class="vocab-romaji">Arigatou</div>
+                        <div class="vocab-fr">Merci</div>
+                    </div>
+                    <div class="vocab-item-v2">
+                        <div class="vocab-jp">すみません</div>
+                        <div class="vocab-romaji">Sumimasen</div>
+                        <div class="vocab-fr">Pardon</div>
+                    </div>
+                    <div class="vocab-item-v2">
+                        <div class="vocab-jp">はい / いいえ</div>
+                        <div class="vocab-romaji">Hai / Iie</div>
+                        <div class="vocab-fr">Oui / Non</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vocab-section">
+                <h3>Restaurant</h3>
+                <div class="vocab-grid-v2">
+                    <div class="vocab-item-v2">
+                        <div class="vocab-jp">いただきます</div>
+                        <div class="vocab-romaji">Itadakimasu</div>
+                        <div class="vocab-fr">Bon appétit</div>
+                    </div>
+                    <div class="vocab-item-v2">
+                        <div class="vocab-jp">おいしい</div>
+                        <div class="vocab-romaji">Oishii</div>
+                        <div class="vocab-fr">Délicieux</div>
+                    </div>
+                    <div class="vocab-item-v2">
+                        <div class="vocab-jp">お水ください</div>
+                        <div class="vocab-romaji">Omizu kudasai</div>
+                        <div class="vocab-fr">De l'eau SVP</div>
+                    </div>
+                    <div class="vocab-item-v2">
+                        <div class="vocab-jp">お会計</div>
+                        <div class="vocab-romaji">Okaikei</div>
+                        <div class="vocab-fr">L'addition</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vocab-section">
+                <h3>Questions</h3>
+                <div class="vocab-grid-v2">
+                    <div class="vocab-item-v2">
+                        <div class="vocab-jp">いくらですか？</div>
+                        <div class="vocab-romaji">Ikura desu ka?</div>
+                        <div class="vocab-fr">Combien?</div>
+                    </div>
+                    <div class="vocab-item-v2">
+                        <div class="vocab-jp">どこですか？</div>
+                        <div class="vocab-romaji">Doko desu ka?</div>
+                        <div class="vocab-fr">Où est-ce?</div>
+                    </div>
+                    <div class="vocab-item-v2">
+                        <div class="vocab-jp">トイレはどこ？</div>
+                        <div class="vocab-romaji">Toire wa doko?</div>
+                        <div class="vocab-fr">Où toilettes?</div>
+                    </div>
+                    <div class="vocab-item-v2">
+                        <div class="vocab-jp">わかりません</div>
+                        <div class="vocab-romaji">Wakarimasen</div>
+                        <div class="vocab-fr">Je comprends pas</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vocab-section">
+                <h3>Nombres</h3>
+                <div class="vocab-grid-v2">
+                    <div class="vocab-item-v2">
+                        <div class="vocab-romaji">Ichi · Ni · San</div>
+                        <div class="vocab-fr">1 · 2 · 3</div>
+                    </div>
+                    <div class="vocab-item-v2">
+                        <div class="vocab-romaji">Yon · Go · Roku</div>
+                        <div class="vocab-fr">4 · 5 · 6</div>
+                    </div>
+                    <div class="vocab-item-v2">
+                        <div class="vocab-romaji">Nana · Hachi</div>
+                        <div class="vocab-fr">7 · 8</div>
+                    </div>
+                    <div class="vocab-item-v2">
+                        <div class="vocab-romaji">Kyuu · Juu</div>
+                        <div class="vocab-fr">9 · 10</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vocab-section">
+                <h3>Urgences</h3>
+                <div class="vocab-grid-v2">
+                    <div class="vocab-item-v2 urgent">
+                        <div class="vocab-jp">助けて！</div>
+                        <div class="vocab-romaji">Tasukete!</div>
+                        <div class="vocab-fr">À l'aide!</div>
+                    </div>
+                    <div class="vocab-item-v2 urgent">
+                        <div class="vocab-jp">病院</div>
+                        <div class="vocab-romaji">Byouin</div>
+                        <div class="vocab-fr">Hôpital</div>
+                    </div>
+                    <div class="vocab-item-v2 urgent">
+                        <div class="vocab-jp">警察</div>
+                        <div class="vocab-romaji">Keisatsu</div>
+                        <div class="vocab-fr">Police</div>
+                    </div>
+                    <div class="vocab-item-v2">
+                        <div class="vocab-jp">薬</div>
+                        <div class="vocab-romaji">Kusuri</div>
+                        <div class="vocab-fr">Médicament</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Astuce prononciation -->
+            <div class="info-card-v2">
+                <div class="card-icon">💡</div>
+                <div class="card-content">
+                    <h3>Prononciation</h3>
+                    <ul class="card-list">
+                        <li>Voyelles comme en français!</li>
+                        <li>Pas de tonalité (pas comme chinois)</li>
+                        <li>"R" entre R et L</li>
+                        <li>"U" final silencieux (desu = "dess")</li>
+                        <li>Google Translate mode voix = ami!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Écran 10: OUTILS -->
+    <div id="screen-tools" class="screen">
+        <div class="screen-header">
+            <button class="back-btn" onclick="goToScreen('screen-menu')">←</button>
+            <h2>Outils</h2>
+            <button class="dark-toggle-small" onclick="toggleDarkMode()">
+                <span class="sun">☀️</span>
+                <span class="moon">🌙</span>
+            </button>
+        </div>
+
+        <div class="content-scroll">
+            <!-- Convertisseur -->
+            <div class="tool-card">
+                <h3>💱 Convertisseur</h3>
+                <div class="converter-v2">
+                    <div class="converter-input">
+                        <input type="number" id="jpy-v2" placeholder="JPY" onkeyup="convertJPYv2()">
+                        <span class="currency">¥</span>
+                    </div>
+                    <div class="converter-swap">⇄</div>
+                    <div class="converter-input">
+                        <input type="number" id="eur-v2" placeholder="EUR" onkeyup="convertEURv2()">
+                        <span class="currency">€</span>
+                    </div>
+                </div>
+                <div class="converter-rate">1 EUR = 184.69 JPY</div>
+            </div>
+
+            <!-- Budget Tracker -->
+            <div class="tool-card">
+                <h3>💰 Suivi Budget</h3>
+                <div class="budget-display">
+                    <div class="budget-row">
+                        <span>Budget total</span>
+                        <span class="budget-value">800€</span>
+                    </div>
+                    <div class="budget-row">
+                        <span>Dépensé</span>
+                        <span class="budget-value spent" id="spent-v2">0€</span>
+                    </div>
+                    <div class="budget-row">
+                        <span>Restant</span>
+                        <span class="budget-value remaining" id="remaining-v2">800€</span>
+                    </div>
+                </div>
+                <div class="budget-progress-v2">
+                    <div class="progress-fill" id="progress-v2" style="width: 0%"></div>
+                </div>
+                <div class="budget-actions">
+                    <input type="number" id="expense-v2" placeholder="Montant (€)">
+                    <button onclick="addExpenseV2()">+ Ajouter</button>
+                    <button class="reset" onclick="resetBudgetV2()">↻</button>
+                </div>
+            </div>
+
+            <!-- Checklist complète -->
+            <div class="tool-card">
+                <h3>✅ Checklist Avant Départ</h3>
+                <div class="checklist-v2">
+                    <label class="check-item">
+                        <input type="checkbox" id="c1">
+                        <span>Passeport valide 6+ mois</span>
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" id="c2">
+                        <span>Billets avion imprimés</span>
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" id="c3">
+                        <span>Hôtels confirmés</span>
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" id="c4">
+                        <span>eSIM Holafly installée</span>
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" id="c5">
+                        <span>Carte Wise/Revolut</span>
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" id="c6">
+                        <span>Google Maps hors-ligne</span>
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" id="c7">
+                        <span>Adaptateur type A</span>
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" id="c8">
+                        <span>Powerbank ≤27,000 mAh</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Checklist Réservations -->
+            <div class="tool-card">
+                <h3>📅 Réservations</h3>
+                <div class="checklist-v2">
+                    <label class="check-item">
+                        <input type="checkbox" id="r1">
+                        <span>Cérémonies thé (2×)</span>
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" id="r2">
+                        <span>TeamLab</span>
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" id="r3">
+                        <span>Universal Studios</span>
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" id="r4">
+                        <span>Sumo (optionnel)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Checklist Apps -->
+            <div class="tool-card">
+                <h3>📱 Apps Essentielles</h3>
+                <div class="checklist-v2">
+                    <label class="check-item">
+                        <input type="checkbox" id="a1">
+                        <span>Google Maps</span>
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" id="a2">
+                        <span>Google Translate</span>
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" id="a3">
+                        <span>Hyperdia (trains)</span>
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" id="a4">
+                        <span>Wise/Revolut</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Budget détaillé -->
+            <div class="info-card-v2">
+                <div class="card-icon">💰</div>
+                <div class="card-content">
+                    <h3>Budget Détaillé</h3>
+                    <p><strong>1€ = 184,69 JPY</strong></p>
+
+                    <div style="margin-top: 16px;">
+                        <p style="font-weight: 700; color: var(--torii); margin-bottom: 8px;">Transport</p>
+                        <ul class="card-list">
+                            <li>Tokyo métro 4j: 43€</li>
+                            <li>Shinkansen: 72€</li>
+                            <li>Kyoto+Nara 4j: 32€</li>
+                            <li>Osaka 2j: 24€</li>
+                            <li><strong>Total: 190€</strong></li>
+                        </ul>
+                    </div>
+
+                    <div style="margin-top: 16px;">
+                        <p style="font-weight: 700; color: var(--torii); margin-bottom: 8px;">Activités</p>
+                        <ul class="card-list">
+                            <li>Goshuin (carnet+15): 49€</li>
+                            <li>Cérémonies thé (×2): 54€</li>
+                            <li>Temples entrées: 43€</li>
+                            <li>TeamLab: 17€</li>
+                            <li>Universal Studios: 51€</li>
+                            <li><strong>Total: 216€</strong></li>
+                        </ul>
+                    </div>
+
+                    <div style="margin-top: 16px;">
+                        <p style="font-weight: 700; color: var(--torii); margin-bottom: 8px;">Nourriture</p>
+                        <ul class="card-list">
+                            <li>10 jours (3-5k/j): 162-270€</li>
+                        </ul>
+                    </div>
+
+                    <div style="margin-top: 16px;">
+                        <p style="font-weight: 700; color: var(--torii); margin-bottom: 8px;">Divers</p>
+                        <ul class="card-list">
+                            <li>eSIM Holafly 10j: 32€</li>
+                            <li>Shopping suggéré: 135€</li>
+                        </ul>
+                    </div>
+
+                    <div style="margin-top: 20px; padding: 16px; background: linear-gradient(135deg, var(--sakura) 0%, #FFD6E0 100%); border-radius: 12px;">
+                        <p style="font-weight: 700; font-size: 18px; color: var(--nuit); text-align: center;">
+                            TOTAL: 735-843€
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Économies -->
+            <div class="info-card-v2">
+                <div class="card-icon">💡</div>
+                <div class="card-content">
+                    <h3>Économies</h3>
+                    <ul class="card-list">
+                        <li>50% activités GRATUITES!</li>
+                        <li>Konbini repas: 400-800 JPY</li>
+                        <li>ATM Seven Bank 24h</li>
+                        <li>Détaxe: 8-10% avec passeport</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Tab Bar (fixe sur tous les écrans sauf cover) -->
+    <div id="bottom-tabs" class="bottom-tabs">
+        <button class="tab-btn" onclick="goToScreen('screen-menu')">
+            <span class="tab-icon">🏠</span>
+            <span class="tab-label">Menu</span>
+        </button>
+        <button class="tab-btn" onclick="goToScreen('screen-itinerary')">
+            <span class="tab-icon">🗓️</span>
+            <span class="tab-label">Jours</span>
+        </button>
+        <button class="tab-btn" onclick="goToScreen('screen-places')">
+            <span class="tab-icon">⛩️</span>
+            <span class="tab-label">Lieux</span>
+        </button>
+        <button class="tab-btn" onclick="goToScreen('screen-tools')">
+            <span class="tab-icon">🛠️</span>
+            <span class="tab-label">Outils</span>
+        </button>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
